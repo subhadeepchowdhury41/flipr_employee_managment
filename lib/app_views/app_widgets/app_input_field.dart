@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../app_constants.dart';
+import '../../app_constants.dart';
 
 class AppTextInputWidget extends StatefulWidget {
   final String? Function(dynamic value) validate;

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../app_constants.dart';
-
 class AppRoundedButton extends StatefulWidget {
   final Function() onPress;
   final String buttonText;

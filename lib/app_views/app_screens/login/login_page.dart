@@ -1,5 +1,5 @@
-import 'package:flipr_employee_managment/app_widgets/app_input_field.dart';
-import 'package:flipr_employee_managment/app_widgets/app_rounded_button.dart';
+import 'package:flipr_employee_managment/app_views//app_widgets/app_input_field.dart';
+import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
