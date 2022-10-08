@@ -1,4 +1,4 @@
-import 'package:flipr_employee_managment/app_screens/login/login_page.dart';
+import 'package:flipr_employee_managment/app_views/app_screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
