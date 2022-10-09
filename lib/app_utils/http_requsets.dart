@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:flipr_employee_managment/app_services/database/shared_preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class HttpRequests {
-  static const String _baseUrl = "https://localhost:8080/";
+  static const String _baseUrl = "http://192.168.117.1:8080/api/";
 
-  Future<Map<String, dynamic>?> sendGetRequest(
+  static Future<Map<String, dynamic>?> sendGetRequest(
       {required String url, bool requiresAccess = false}) async {
     await SharedPreferenceServices.getAccessToken().then((accessToken) async {
       if (requiresAccess) {
@@ -18,7 +20,7 @@ class HttpRequests {
         debugPrint("No access token found");
         return null;
       } else {
-        debugPrint("Sending without access token");
+        debugPrint("Sending without access token to $_baseUrl$url");
         final response = await http.get(Uri.parse(_baseUrl + url));
         return response;
       }
@@ -28,32 +30,35 @@ class HttpRequests {
     return null;
   }
 
-  Future<Map<String, dynamic>?> sendPostRequest(
+  static Future<Map<String, dynamic>?> sendPostRequest(
       {required String url,
       Map<String, dynamic>? body,
       bool requiresAccess = false}) async {
+    debugPrint(body.toString());
     await SharedPreferenceServices.getAccessToken().then((accessToken) async {
       if (requiresAccess) {
         if (accessToken != null) {
           debugPrint("Sending with access token");
-          final response = await http.post(Uri.parse(url),
-              headers: {"x-access-token": accessToken}, body: body);
-          return response;
+          await http.post(Uri.parse(_baseUrl + url),
+              headers: {"x-access-token": accessToken}, body: body).then((response) {
+            return response;
+          });
+        } else {
+          debugPrint("No access token found");
+          return null;
         }
-        debugPrint("No access token found");
-        return null;
       } else {
-        debugPrint("Sending without access token");
-        final response = await http.post(Uri.parse(url), body: body);
-        return response;
+        debugPrint("Sending without access token to $_baseUrl$url");
+        await http.post(Uri.parse(_baseUrl + url), body: body).then((response) {
+          debugPrint(response.body.toString());
+          return response.body;
+        });
       }
-    }).catchError((err) {
-      debugPrint(err.toString());
     });
     return null;
   }
 
-  Future<Map<String, dynamic>?> sendDeleteRequest(
+  static Future<Map<String, dynamic>?> sendDeleteRequest(
       {required String url,
       Map<String, dynamic>? body,
       bool requiresAccess = false}) async {
