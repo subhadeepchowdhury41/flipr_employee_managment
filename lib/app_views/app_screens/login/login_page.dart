@@ -13,18 +13,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final AuthProvider _provider;
 
-  late AuthProvider _provider = Provider.of<AuthProvider>(
-      context, listen: false);
+  @override
+  void initState() {
+    // TODO: implement initState
+    _provider = Provider.of<AuthProvider>(context, listen: false);
+
+    super.initState();
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameTextEditingController =
-      TextEditingController();
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController();
+  String? _username, _password;
 
   @override
   Widget build(BuildContext context) {
+    // _provider = Provider.of<AuthProvider>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -50,11 +55,11 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// username
                 AppTextInputWidget(
-                  textEditingController: _usernameTextEditingController,
                   validate: (dynamic value) {
                     if (value == null || value.isEmpty) {
                       return 'Please add username';
                     }
+                    _username = value.toString();
                     return null;
                   },
                   hintText: 'Username',
@@ -63,12 +68,12 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// password
                 AppTextInputWidget(
-                  textEditingController: _passwordTextEditingController,
                   isPassword: true,
                   validate: (dynamic value) {
                     if (value == null || value.isEmpty) {
                       return 'Please add password';
                     }
+                    _password = value.toString();
                     return null;
                   },
                   hintText: 'Password',
@@ -94,9 +99,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _validateLoginPage() async {
     if (_formKey.currentState!.validate()) {
-      _provider.logIn(context: context, username: _usernameTextEditingController.text,
-          password: _passwordTextEditingController.text).then((value) {
-      });
+      _provider
+          .logIn(context: context, username: _username!, password: _password!)
+          .then((value) {});
     }
   }
 }
