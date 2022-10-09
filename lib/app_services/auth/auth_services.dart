@@ -5,27 +5,23 @@ import 'package:flutter/cupertino.dart';
 class AuthServices {
   static Future<Map<String, dynamic>?> signInWithUsernameAndPassword({required String username,
     required String password}) async {
+    Map<String, dynamic>? user = {};
     await HttpRequests.sendPostRequest(url: 'auth/signin', body: {
       'username': username,
       'password': password
-    }, requiresAccess: false).then((user) {
-      debugPrint('...${user.toString()}');
-      if (user != null) {
-        if (user['access_token'] != null) {
-          if (user['role'] == null) {
-            user['err_msg'] = user['message'];
-          } else {
-            SharedPreferenceServices.setLoginCredentials(
-                accessToken: user['access_token'],
-                refreshToken: user['refresh_token']
-            );
-          }
-
-          return user;
+    }, requiresAccess: false).then((userDetails) {
+      if (userDetails != null) {
+        if (userDetails['access_token'] == null) {
+          debugPrint('.....${userDetails.toString()}');
+          user!['err_msg'] = userDetails['message'];
       } else {
-          return null;
+          SharedPreferenceServices.setLoginCredentials(
+              accessToken: userDetails['access_token'],
+              refreshToken: userDetails['refresh_token']
+          );
+          user = userDetails;
       }}
     });
-    return null;
+    return user;
   }
 }
