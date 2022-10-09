@@ -29,20 +29,8 @@ class _StackedBarChartState extends State<StackedBarChart> {
           StackedColumnSeries<TaskData, String>(
             dataSource: _chartData,
             xValueMapper: (TaskData exp, _) => exp.category,
-            yValueMapper: (TaskData exp, _) => exp.breaks,
+            yValueMapper: (TaskData exp, _) => exp.duration,
             name: 'Breaks',
-          ),
-          StackedColumnSeries<TaskData, String>(
-            dataSource: _chartData,
-            xValueMapper: (TaskData exp, _) => exp.category,
-            yValueMapper: (TaskData exp, _) => exp.work,
-            name: 'Work',
-          ),
-          StackedColumnSeries<TaskData, String>(
-            dataSource: _chartData,
-            xValueMapper: (TaskData exp, _) => exp.category,
-            yValueMapper: (TaskData exp, _) => exp.meeting,
-            name: 'Meeting',
           ),
         ],
         primaryXAxis: CategoryAxis(),
@@ -52,11 +40,9 @@ class _StackedBarChartState extends State<StackedBarChart> {
 
   List<TaskData> _getTaskData() {
     List<TaskData> data = [
-      TaskData(category: 'Mon', breaks: 1, meeting: 5, work: 4),
-      TaskData(category: 'Tue', breaks: 2, meeting: 5, work: 2),
-      TaskData(category: 'Wed', breaks: 2, meeting: 5, work: 2),
-      TaskData(category: 'Thur', breaks: 2, meeting: 5, work: 2),
-      TaskData(category: 'Fri', breaks: 2, meeting: 5, work: 2),
+      TaskData(category: 'Breaks', duration: 5),
+      TaskData(category: 'Meeting', duration: 8),
+      TaskData(category: 'Work', duration: 30),
     ];
     return data;
   }
@@ -64,12 +50,10 @@ class _StackedBarChartState extends State<StackedBarChart> {
 
 class TaskData {
   final String category;
-  final num breaks, meeting, work;
+  final num duration;
 
   TaskData({
     required this.category,
-    required this.breaks,
-    required this.meeting,
-    required this.work,
+    required this.duration,
   });
 }
