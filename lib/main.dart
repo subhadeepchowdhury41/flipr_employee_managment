@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // home: const EmployeeAddTaskPage(),
-        home: const TasksChartPage(),
-        // home: const LoginPage(),
+        // home: const TasksChartPage(),
+        home: const LoginPage(),
       ),
     );
   }

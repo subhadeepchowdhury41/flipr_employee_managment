@@ -34,28 +34,31 @@ class HttpRequests {
       {required String url,
       Map<String, dynamic>? body,
       bool requiresAccess = false}) async {
-    debugPrint(body.toString());
+    String? responseBody;
     await SharedPreferenceServices.getAccessToken().then((accessToken) async {
       if (requiresAccess) {
         if (accessToken != null) {
           debugPrint("Sending with access token");
           await http.post(Uri.parse(_baseUrl + url),
               headers: {"x-access-token": accessToken}, body: body).then((response) {
-            return response;
+                responseBody = response.body;
           });
         } else {
           debugPrint("No access token found");
-          return null;
         }
       } else {
         debugPrint("Sending without access token to $_baseUrl$url");
         await http.post(Uri.parse(_baseUrl + url), body: body).then((response) {
-          debugPrint(response.body.toString());
-          return response.body;
+          responseBody = response.body;
         });
       }
     });
-    return null;
+
+    if (responseBody != null) {
+      return json.decode(responseBody!);
+    } else {
+      return null;
+    }
   }
 
   static Future<Map<String, dynamic>?> sendDeleteRequest(

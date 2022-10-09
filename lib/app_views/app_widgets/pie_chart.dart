@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart' show PieChart;
-
+import 'package:pie_chart/pie_chart.dart';
 class PieChartEmployee extends StatefulWidget {
   const PieChartEmployee({Key? key}) : super(key: key);
 
@@ -18,19 +17,17 @@ class _PieChartEmployeeState extends State<PieChartEmployee> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          PieChart(
-            dataMap: _dataMap,
-            colorList: const [
-              Colors.redAccent,
-              Colors.orangeAccent,
-              Colors.green
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        PieChart(
+          dataMap: _dataMap,
+          colorList: const [
+            Colors.redAccent,
+            Colors.orangeAccent,
+            Colors.green
+          ],
+        ),
+      ],
     );
   }
 }
