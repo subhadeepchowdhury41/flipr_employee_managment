@@ -6,11 +6,9 @@ class DropdownMenu extends StatefulWidget {
   final String? Function(String? value) validate;
   final String? hintText;
   final List<String> taskTypes;
-  final TextEditingController textEditingController;
   const DropdownMenu({
     Key? key,
     required this.taskTypes,
-    required this.textEditingController,
     required this.hintText,
     required this.validate,
   }) : super(key: key);
@@ -30,21 +28,15 @@ class _DropdownMenuState extends State<DropdownMenu> {
   }
 
   void _initializeOptionList() {
-    items = [
-      {
-        'id': '-1',
-        'value': 'Choose',
-      }
-    ];
+    items = ['${widget.hintText}'];
     items.addAll(widget.taskTypes);
-    widget.textEditingController.text = items[0];
+    currentValue = items[0];
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      margin: const EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       decoration: kContainerElevationDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,58 +51,45 @@ class _DropdownMenuState extends State<DropdownMenu> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 2.5),
-                    decoration: kContainerElevationDecoration.copyWith(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade500,
-                          offset: const Offset(0.0, 0.5), //(x,y)
-                          blurRadius: 0.0,
-                        ),
-                      ],
+                  DropdownButton<dynamic>(
+                    hint: Text(
+                      '${widget.hintText}',
+                      style: kHintTextStyle,
                     ),
-                    child: DropdownButton<dynamic>(
-                      hint: Text(
-                        '${widget.hintText}',
-                        style: kHintTextStyle,
-                      ),
-                      value: currentValue,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        size: 40,
-                        color: CupertinoColors.black,
-                      ),
-                      items: items.map(
-                        (option) {
-                          return DropdownMenuItem(
-                            value: option,
-                            onTap: () => setState(() {
-                              debugPrint('value selected --> $option');
-                            }),
-                            child: Text(
-                              option,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: option == '${widget.hintText}'
-                                    ? Colors.grey.shade600
-                                    : Colors.black,
-                              ),
+                    value: currentValue,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      size: 40,
+                      color: CupertinoColors.black,
+                    ),
+                    items: items.map(
+                      (option) {
+                        return DropdownMenuItem(
+                          value: option,
+                          onTap: () => setState(() {
+                            debugPrint('value selected --> $option');
+                          }),
+                          child: Text(
+                            option,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: option == '${widget.hintText}'
+                                  ? Colors.grey.shade500
+                                  : Colors.black,
                             ),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          currentValue = value;
-                        });
-
-                        formState.didChange(currentValue);
+                          ),
+                        );
                       },
-                      isExpanded: true,
-                    ),
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        currentValue = value;
+                      });
+
+                      formState.didChange(currentValue);
+                    },
+                    isExpanded: true,
                   ),
                   if (formState.hasError)
                     Padding(

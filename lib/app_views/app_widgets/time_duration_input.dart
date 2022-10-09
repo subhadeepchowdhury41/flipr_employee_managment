@@ -2,12 +2,12 @@ import 'package:flipr_employee_managment/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AppTextInputWidget extends StatefulWidget {
-  final String? Function(String? value) validate;
+class TimeDurationInputWidget extends StatefulWidget {
+  final String? Function(String? value, String timeType) validate;
   final String? hintText;
   final bool isPassword;
   final TextInputType keyboardType;
-  const AppTextInputWidget({
+  const TimeDurationInputWidget({
     Key? key,
     required this.validate,
     this.isPassword = false,
@@ -16,12 +16,14 @@ class AppTextInputWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AppTextInputWidget> createState() => _AppTextInputWidgetState();
+  State<TimeDurationInputWidget> createState() =>
+      _TimeDurationInputWidgetState();
 }
 
-class _AppTextInputWidgetState extends State<AppTextInputWidget> {
+class _TimeDurationInputWidgetState extends State<TimeDurationInputWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isVisible = false;
+  String _timeType = 'hrs';
 
   @override
   void initState() {
@@ -38,7 +40,7 @@ class _AppTextInputWidgetState extends State<AppTextInputWidget> {
       child: FormField(
         initialValue: _textEditingController,
         validator: (val) {
-          return widget.validate(_textEditingController.text);
+          return widget.validate(_textEditingController.text, _timeType);
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         builder: (formState) {
@@ -48,6 +50,7 @@ class _AppTextInputWidgetState extends State<AppTextInputWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
+                    flex: 8,
                     child: TextField(
                       controller: _textEditingController,
                       onChanged: (val) {
@@ -67,6 +70,29 @@ class _AppTextInputWidgetState extends State<AppTextInputWidget> {
                       keyboardType: widget.keyboardType,
                     ),
                   ),
+                  Expanded(
+                      flex: 2,
+                      child: TextButton(
+                        child: Text(
+                          _timeType,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            // color:
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_timeType == 'HRS') {
+                            // setState(() {
+                            _timeType = 'MIN';
+                            // });
+                          } else {
+                            _timeType = 'HRS';
+                          }
+                          setState(() {
+                            _timeType;
+                          });
+                        },
+                      )),
                   if (widget.isPassword)
                     IconButton(
                       onPressed: () {
