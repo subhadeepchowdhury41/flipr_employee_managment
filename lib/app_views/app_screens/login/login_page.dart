@@ -2,6 +2,7 @@ import 'package:flipr_employee_managment/app_views//app_widgets/app_input_field.
 import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flipr_employee_managment/app_constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +13,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameTextEditingController =
+      TextEditingController();
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// username
                 AppTextInputWidget(
+                  textEditingController: _usernameTextEditingController,
                   validate: (dynamic value) {
                     if (value == null || value.isEmpty) {
                       return 'Please add username';
@@ -51,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 /// password
                 AppTextInputWidget(
+                  textEditingController: _passwordTextEditingController,
                   isPassword: true,
                   validate: (dynamic value) {
                     if (value == null || value.isEmpty) {

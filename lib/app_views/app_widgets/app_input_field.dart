@@ -1,18 +1,19 @@
+import 'package:flipr_employee_managment/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../app_constants.dart';
-
 class AppTextInputWidget extends StatefulWidget {
-  final String? Function(dynamic value) validate;
+  final String? Function(String? value) validate;
   final String? hintText;
   final bool isPassword;
+  final TextEditingController textEditingController;
 
   const AppTextInputWidget({
     Key? key,
     required this.validate,
     this.isPassword = false,
     this.hintText,
+    required this.textEditingController,
   }) : super(key: key);
 
   @override
@@ -20,7 +21,7 @@ class AppTextInputWidget extends StatefulWidget {
 }
 
 class _AppTextInputWidgetState extends State<AppTextInputWidget> {
-  final TextEditingController _textEditingController = TextEditingController();
+  // final TextEditingController _textEditingController = TextEditingController();
   bool _isVisible = false;
 
   @override
@@ -36,9 +37,9 @@ class _AppTextInputWidgetState extends State<AppTextInputWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: kContainerElevationDecoration,
       child: FormField(
-        initialValue: _textEditingController,
+        initialValue: widget.textEditingController,
         validator: (val) {
-          return widget.validate(_textEditingController.text);
+          return widget.validate(widget.textEditingController.text);
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,
         builder: (formState) {
@@ -49,9 +50,9 @@ class _AppTextInputWidgetState extends State<AppTextInputWidget> {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: _textEditingController,
+                      controller: widget.textEditingController,
                       onChanged: (val) {
-                        formState.didChange(_textEditingController);
+                        formState.didChange(widget.textEditingController);
                       },
                       style: const TextStyle(
                         fontSize: 18,

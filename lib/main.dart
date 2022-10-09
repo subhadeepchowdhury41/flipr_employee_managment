@@ -1,3 +1,4 @@
+import 'package:flipr_employee_managment/app_views/app_screens/employee/employee_task_page.dart';
 import 'package:flipr_employee_managment/app_views/app_screens/login/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const EmployeeTaskPage(),
     );
   }
 }

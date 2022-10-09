@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,24 +13,25 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: StreamBuilder(
-        stream: ,
-        builder: (context, AsyncSnapshot<dynamic> tasks){
-
-          if(tasks.connectionState == ConnectionState.waiting){
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }else if(tasks.hasError){
-            return const Center(
-              child: Text('Your tasks have not been loaded check your connection or try again'),
-            );
-          }else if(tasks.hasData){
-            return
-          }
-
-        },
-      )
+      body: Container(),
+      // StreamBuilder(
+      //   stream: ,
+      //   builder: (context, AsyncSnapshot<dynamic> tasks){
+      //
+      //     if(tasks.connectionState == ConnectionState.waiting){
+      //       return const Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }else if(tasks.hasError){
+      //       return const Center(
+      //         child: Text('Your tasks have not been loaded check your connection or try again'),
+      //       );
+      //     }else if(tasks.hasData){
+      //       return
+      //     }
+      //
+      //   },
+      // )
     );
   }
 }
