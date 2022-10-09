@@ -1,8 +1,9 @@
+import 'package:flipr_employee_managment/app_providers/common/auth_provider.dart';
+import 'package:flipr_employee_managment/app_services/auth/auth_services.dart';
 import 'package:flipr_employee_managment/app_views//app_widgets/app_input_field.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flipr_employee_managment/app_constants.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,6 +13,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  late AuthProvider _provider = Provider.of<AuthProvider>(
+      context, listen: false);
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameTextEditingController =
       TextEditingController();
@@ -89,7 +94,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _validateLoginPage() async {
     if (_formKey.currentState!.validate()) {
-      /// todo: find user in database
+      _provider.logIn(context: context, username: _usernameTextEditingController.text,
+          password: _passwordTextEditingController.text).then((value) {
+      });
     }
   }
 }
