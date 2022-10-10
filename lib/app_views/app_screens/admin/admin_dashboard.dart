@@ -1,13 +1,10 @@
-import 'package:flipr_employee_managment/app_providers/task_provider.dart';
-import 'package:flipr_employee_managment/app_views/app_screens/employee/employee_add_task_page.dart';
-import 'package:flipr_employee_managment/app_views/app_widgets/date_picker.dart';
-import 'package:flipr_employee_managment/app_views/app_widgets/pie_chart.dart';
-import 'package:flipr_employee_managment/app_views/app_widgets/task_card.dart';
+import 'package:flipr_employee_managment/app_models/user_model.dart';
+import 'package:flipr_employee_managment/app_services/database/admin_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_providers/employee_provider.dart';
+import '../../../app_providers/admin/employee_provider.dart';
 import '../../app_widgets/employee_card.dart';
 import 'add_employee_page.dart';
 import 'employee_charts_page.dart';
@@ -40,7 +37,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     _employeeProvider = Provider.of<EmployeeProvider>(context);
     super.didChangeDependencies();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,33 +47,26 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         // color: Colors.red,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: FutureBuilder(
-          future: _employeeProvider.setEmployeeList(),
-          builder: (context, AsyncSnapshot<void> snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
+          future: AdminServices.getAllEmployees(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (snap.hasError) {
-              return const Text('Something went wrong');
             } else {
-              return Consumer<EmployeeProvider>(
-                builder: (_, employeeProvider, child) {
-                  return ListView.builder(
-                    // physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: employeeProvider.employeeList.length,
-                    itemBuilder: (context, index) {
-                      return EmployeeCard(
-                        employee: employeeProvider.employeeList[index],
-                        navigate: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) => EmployeeChartPage(
-                                employee: employeeProvider.employeeList[index],
-                              ),
-                            ),
-                          );
-                        },
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return EmployeeCard(
+                    employee: User.fromJson(snapshot.data![index]),
+                    navigate: () {
+                      Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => EmployeeChartPage(
+                            employee: User.fromJson(snapshot.data![index]),
+                          ),
+                        ),
                       );
                     },
                   );
