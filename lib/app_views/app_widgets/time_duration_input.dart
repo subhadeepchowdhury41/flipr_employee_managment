@@ -23,7 +23,7 @@ class TimeDurationInputWidget extends StatefulWidget {
 class _TimeDurationInputWidgetState extends State<TimeDurationInputWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isVisible = false;
-  String _timeType = 'hrs';
+  String _timeType = 'HRS';
 
   @override
   void initState() {

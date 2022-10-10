@@ -19,7 +19,7 @@ class _AppRoundedButtonState extends State<AppRoundedButton> {
     return ElevatedButton(
       onPressed: widget.onPress,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.lightBlue,
         elevation: 8,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
@@ -32,10 +32,10 @@ class _AppRoundedButtonState extends State<AppRoundedButton> {
         padding: const EdgeInsets.all(15),
         child: Text(
           widget.buttonText,
-          style: TextStyle(
-            fontSize: 28,
+          style: const TextStyle(
+            fontSize: 24,
             fontWeight: FontWeight.w800,
-            color: Colors.grey.shade900,
+            color: Colors.white70,
           ),
         ),
       ),

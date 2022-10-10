@@ -30,7 +30,10 @@ class _TasksChartPageState extends State<TasksChartPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
           child: Column(
             children: [
-              PieChartEmployee(),
+              PieChartEmployee(
+                uid: 'satendrapal',
+                date: '11/09/2022',
+              ),
               const SizedBox(height: 30),
               Expanded(
                 child: StackedBarChart(),

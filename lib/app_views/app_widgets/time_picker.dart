@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 
 import '../../app_constants.dart';
 
-class DatePicker extends StatefulWidget {
-  final dynamic Function(DateTime? value) validate;
-  final Future<void> Function(String date) onChanged;
-  const DatePicker({
+class TimePicker extends StatefulWidget {
+  final String? Function(TimeOfDay? value) validate;
+
+  const TimePicker({
     Key? key,
     required this.validate,
-    required this.onChanged,
   }) : super(key: key);
 
   @override
-  State<DatePicker> createState() => _DatePickerState();
+  State<TimePicker> createState() => _TimePickerState();
 }
 
-class _DatePickerState extends State<DatePicker> {
-  DateTime? _date;
+class _TimePickerState extends State<TimePicker> {
+  TimeOfDay? _timeOfDay;
   final DateTime _firstDate = DateTime(2000);
 
   @override
@@ -31,25 +30,30 @@ class _DatePickerState extends State<DatePicker> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _date = DateTime.now();
+    _timeOfDay = TimeOfDay.now();
   }
 
-  Future<void> _showDateTimePicker(FormFieldState formFieldState) async {
-    await showDatePicker(
+  void _showDateTimePicker(FormFieldState formFieldState) {
+    showTimePicker(
       context: context,
-      initialDate: _date ?? DateTime.now(),
-      firstDate: _firstDate,
-      lastDate: DateTime.now(),
-    ).then((value) async {
+      initialTime: TimeOfDay.now(),
+    ).then((value) {
       if (value != null) {
-        // setState(() {
-        _date = value;
-        // });
-        formFieldState.didChange(_date);
-        String date = '${_date!.day}/${_date!.month}/${_date!.year}';
-        await widget.onChanged(date);
+        setState(() {
+          _timeOfDay = value;
+          debugPrint('time of day --> ${_timeOfDay}\n');
+        });
+        formFieldState.didChange(_timeOfDay);
       }
     });
+  }
+
+  String _getDayPeriod(DayPeriod period) {
+    if (period == DayPeriod.am) {
+      return 'AM';
+    } else {
+      return 'PM';
+    }
   }
 
   @override
@@ -58,11 +62,11 @@ class _DatePickerState extends State<DatePicker> {
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       decoration: kContainerElevationDecoration,
-      child: FormField<DateTime>(
+      child: FormField<TimeOfDay>(
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        initialValue: _date,
-        validator: (date) {
-          return widget.validate(date);
+        initialValue: _timeOfDay,
+        validator: (time) {
+          return widget.validate(time);
         },
         builder: (formState) {
           return Column(
@@ -79,11 +83,13 @@ class _DatePickerState extends State<DatePicker> {
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        '${_date != null ? _date!.day : 'dd'}/${_date != null ? _date!.month : 'mm'}/${_date != null ? _date!.year : 'yyyy'}',
+                        '${_timeOfDay != null ? _timeOfDay!.hour : '00'} : '
+                        '${_timeOfDay != null ? _timeOfDay!.minute : '00'} '
+                        '${_timeOfDay != null ? _getDayPeriod(_timeOfDay!.period) : 'AM'}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: _date == null
+                          color: _timeOfDay == null
                               ? Colors.grey.shade500
                               : Colors.black,
                         ),
@@ -97,9 +103,9 @@ class _DatePickerState extends State<DatePicker> {
                       child: IconButton(
                         onPressed: () {
                           setState(() {
-                            _date = null;
+                            _timeOfDay = null;
                           });
-                          formState.didChange(_date);
+                          formState.didChange(_timeOfDay);
                         },
                         icon: const Icon(
                           Icons.clear,
@@ -113,10 +119,9 @@ class _DatePickerState extends State<DatePicker> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: IconButton(
-                        onPressed: () async =>
-                            await _showDateTimePicker(formState),
+                        onPressed: () => _showDateTimePicker(formState),
                         icon: const Icon(
-                          Icons.calendar_month,
+                          Icons.watch_later_outlined,
                           size: 28,
                           color: CupertinoColors.activeBlue,
                         ),
