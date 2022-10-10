@@ -54,24 +54,29 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return EmployeeCard(
-                    employee: User.fromJson(snapshot.data![index]),
-                    navigate: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => EmployeeChartPage(
-                            employee: User.fromJson(snapshot.data![index]),
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return EmployeeCard(
+                      employee: User.fromJson(snapshot.data![index]),
+                      navigate: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => EmployeeChartPage(
+                              employee: User.fromJson(snapshot.data![index]),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
+                        );
+                      },
+                    );
+                  },
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+
             }
           },
         ),

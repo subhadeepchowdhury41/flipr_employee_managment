@@ -2,32 +2,34 @@ import 'dart:convert';
 import 'package:flipr_employee_managment/app_services/database/shared_preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class HttpRequests {
   static const String _baseUrl =
-      "http://192.168.195.53:8080/api/";
+      "https://flipr-employee-management.herokuapp.com/api/";
 
   static Future<Map<String, dynamic>?> sendGetRequest(
       {required String url, bool requiresAccess = false}) async {
+    Map<String, dynamic>? responseBody;
     await SharedPreferenceServices.getAccessToken().then((accessToken) async {
       if (requiresAccess) {
         if (accessToken != null) {
           debugPrint("Sending with access token");
           final response = await http.get(Uri.parse(_baseUrl + url),
               headers: {"x-access-token": accessToken});
-          return response;
+          responseBody = json.decode(response.body);
         }
         debugPrint("No access token found");
         return null;
       } else {
         debugPrint("Sending without access token to $_baseUrl$url");
         final response = await http.get(Uri.parse(_baseUrl + url));
-        return response;
+        responseBody = json.decode(response.body);
       }
     }).catchError((err) {
       debugPrint(err.toString());
     });
-    return null;
+    return responseBody;
   }
 
   static Future<Map<String, dynamic>?> sendPostRequest(
