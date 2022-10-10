@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class HttpRequests {
   static const String _baseUrl =
-      "https://flipr-employee-management.herokuapp.com/api/";
+      "http://192.168.195.53:8080/api/";
 
   static Future<Map<String, dynamic>?> sendGetRequest(
       {required String url, bool requiresAccess = false}) async {

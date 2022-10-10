@@ -2,13 +2,10 @@ import 'package:flipr_employee_managment/app_views/app_widgets/app_input_field.d
 import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/date_picker.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/dropdown_input.dart';
-import 'package:flipr_employee_managment/app_views/app_widgets/time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_providers/employee_provider.dart';
-import '../../../app_providers/task_provider.dart';
-import '../../app_widgets/time_duration_input.dart';
+import '../../../app_providers/admin/employee_provider.dart';
 
 class AddEmployeePage extends StatefulWidget {
   const AddEmployeePage({Key? key}) : super(key: key);
@@ -21,7 +18,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late EmployeeProvider _employeeProvider;
 
-  String? _username, _profession, _email, _contactNo, _department, _joiningDate;
+  String? _username, _profession, _email, _contactNo, _department, _joiningDate, _password;
 
   @override
   void didChangeDependencies() {
@@ -55,6 +52,19 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       return null;
                     },
                     hintText: 'username',
+                  ),
+                  const SizedBox(height: 25),
+
+                  AppTextInputWidget(
+                    validate: (String? val) {
+                      if (val == null || val.isEmpty) {
+                        return 'Please add password';
+                      }
+                      _password = val;
+                      return null;
+                    },
+                    hintText: 'password',
+                    keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 25),
 
@@ -162,7 +172,8 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         'contactNo': _contactNo,
         'department': _department,
         'joiningDate': _joiningDate,
-      });
+        'password': _password
+      }, context);
       Navigator.pop(context);
     }
   }

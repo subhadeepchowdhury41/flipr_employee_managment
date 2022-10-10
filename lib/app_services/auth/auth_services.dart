@@ -26,12 +26,21 @@ class AuthServices {
     return user;
   }
 
-  static Future<Map<String, dynamic>?> addEmployee(
+  static Future<String?> addEmployee(
       {required Map<String, dynamic> empData}) async {
+    String? result;
     await HttpRequests.sendPostRequest(url: 'auth/signup', body: empData)
         .then((response) {
-          if(response)
+          if (response != null) {
+            if (response.containsKey('result')) {
+              if (response['result'].toString().contains('success')) {
+                result = "Success";
+              } else {
+                result = response['result'];
+              }
+            }
+          }
     });
-    return null;
+    return result;
   }
 }

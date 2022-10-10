@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
   late String userId;
-
+  late String userRole;
   logIn({required BuildContext context, required String username,
      required String password}) async {
     AuthServices.signInWithUsernameAndPassword(username: username,
