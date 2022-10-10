@@ -1,7 +1,10 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 
 import '../app_models/task_model.dart';
 import '../app_models/user_model.dart';
+import '../app_utils/http_requsets.dart';
 
 class EmployeeProvider extends ChangeNotifier {
   final List<User> _employeeList = [
@@ -72,6 +75,7 @@ class EmployeeProvider extends ChangeNotifier {
     User newUser = User.fromJson(userData);
     // TODO: ADD Employee TO DATABASE
 
+    // update _employeeList
     _employeeList.add(newUser);
     notifyListeners();
   }
