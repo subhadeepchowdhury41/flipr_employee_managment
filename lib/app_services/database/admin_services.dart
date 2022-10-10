@@ -5,11 +5,12 @@ class AdminServices {
   static Future<List<Map<String, dynamic>>> getAllEmployees() async {
     List<Map<String, dynamic>> employees = [];
     await HttpRequests.sendGetRequest(url: 'auth/employees').then((result) {
+      debugPrint(result.toString());
       if (result != null) {
         employees = [...result['employees']];
       }
     });
-    debugPrint('\\k\n......$employees');
+    debugPrint('......$employees');
     return employees;
   }
 }

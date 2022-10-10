@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceServices {
-  static void setLoginCredentials(
+  static Future<void> setLoginCredentials(
       {required String accessToken, required String refreshToken}) async {
     final SharedPreferences sharedPreference =
         await SharedPreferences.getInstance();

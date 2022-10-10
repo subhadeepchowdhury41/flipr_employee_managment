@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         // home: const TasksChartPage(),
         // home: const LoginPage(),
         // home: EmployeeTaskPage(),
-        home: AdminDashboardPage(),
+        home: LoginPage(),
       ),
     );
   }

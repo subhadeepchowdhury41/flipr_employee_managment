@@ -1,4 +1,6 @@
+import 'package:flipr_employee_managment/app_providers/common/auth_provider.dart';
 import 'package:flipr_employee_managment/app_providers/task_provider.dart';
+import 'package:flipr_employee_managment/app_services/database/employee_services.dart';
 import 'package:flipr_employee_managment/app_views/app_screens/employee/employee_add_task_page.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/date_picker.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/pie_chart.dart';
@@ -15,7 +17,7 @@ class EmployeeTaskPage extends StatefulWidget {
 }
 
 class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
-  late TaskProvider _taskProvider;
+  late AuthProvider _authProvider;
 
   String? _date;
 
@@ -32,7 +34,7 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
 
   @override
   void didChangeDependencies() {
-    _taskProvider = Provider.of<TaskProvider>(context);
+    _authProvider = Provider.of<AuthProvider>(context);
     super.didChangeDependencies();
   }
 
@@ -47,59 +49,66 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
       body: Container(
         // color: Colors.red,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Consumer<TaskProvider>(
-          builder: (_, taskProvider, child) {
-            return Column(
-              children: [
-                DatePicker(
-                  validate: (DateTime? date) {
-                    // if (date == null) {
-                    //   return 'Please select a date';
-                    // }
-                    // if (date != null) {
-                    //   String currDate =
-                    //       '${date.day}/${date.month}/${date.year}';
-                    //   _date = currDate;
-                    // }
+        child: FutureBuilder(
+          future: EmployeeServices.getTasks(_authProvider.userId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              if (snapshot.hasData) {
+                Column(
+                  children: [
+                    DatePicker(
+                      validate: (DateTime? date) {
+                        // if (date == null) {
+                        //   return 'Please select a date';
+                        // }
+                        // if (date != null) {
+                        //   String currDate =
+                        //       '${date.day}/${date.month}/${date.year}';
+                        //   _date = currDate;
+                        // }
 
-                    return null;
-                  },
-                  onChanged: (date) async {
-                    // debugPrint('calling async function onchanged\n');
-                    _date = date;
-                    await taskProvider.filterTaskListFromDate(_date!);
-                    // debugPrint('calling setState function \n');
+                        return null;
+                      },
+                      onChanged: (date) async {
+                        // debugPrint('calling async function onchanged\n');
+                        _date = date;
+                        await taskProvider.filterTaskListFromDate(_date!);
+                        // debugPrint('calling setState function \n');
 
-                    setState(() {
-                      _date;
-                    });
-                  },
-                ),
-                const SizedBox(height: 25),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        if (_date != null)
-                          PieChartEmployee(date: _date!, uid: ''),
-                        const SizedBox(height: 25),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: taskProvider.tasksList.length,
-                          itemBuilder: (context, index) {
-                            return TaskCard(
-                              task: taskProvider.tasksList[index],
-                              navigate: () {},
-                            );
-                          },
-                        ),
-                      ],
+                        setState(() {
+                          _date;
+                        });
+                      },
                     ),
-                  ),
-                ),
-              ],
-            );
+                    const SizedBox(height: 25),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            if (_date != null)
+                              PieChartEmployee(date: _date!, uid: ''),
+                            const SizedBox(height: 25),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: taskProvider.tasksList.length,
+                              itemBuilder: (context, index) {
+                                return TaskCard(
+                                  task: taskProvider.tasksList[index],
+                                  navigate: () {},
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }
           },
         ),
       ),

@@ -10,17 +10,11 @@ class AuthServices {
             url: 'auth/signin',
             body: {'username': username, 'password': password},
             requiresAccess: false)
-        .then((userDetails) {
-      if (userDetails != null) {
-        if (userDetails['access_token'] == null) {
-          debugPrint('.....${userDetails.toString()}');
-          user!['err_msg'] = userDetails['message'];
-        } else {
-          SharedPreferenceServices.setLoginCredentials(
-              accessToken: userDetails['access_token'],
-              refreshToken: userDetails['refresh_token']);
-          user = userDetails;
-        }
+    .then((userDetails) async {
+      if (userDetails!.containsKey('message')) {
+        user!['err_msg'] = userDetails['message'];
+      } else {
+        user = userDetails;
       }
     });
     return user;

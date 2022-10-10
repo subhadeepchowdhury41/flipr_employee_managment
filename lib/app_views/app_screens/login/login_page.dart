@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // _provider = Provider.of<AuthProvider>(context, listen: false);
+    _provider = Provider.of<AuthProvider>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
