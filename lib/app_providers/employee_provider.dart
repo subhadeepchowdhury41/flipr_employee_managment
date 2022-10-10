@@ -11,7 +11,7 @@ class EmployeeProvider extends ChangeNotifier {
     User(
       id: '1',
       username: 'satendra pal',
-      role: 'it',
+      profession: 'it',
       email: 'satyendrapal565@gmail.com',
       contactNo: '9335828140',
       department: 'it',
@@ -21,7 +21,7 @@ class EmployeeProvider extends ChangeNotifier {
     User(
       id: '1',
       username: 'satendra pal',
-      role: 'it',
+      profession: 'it',
       email: 'satyendrapal565@gmail.com',
       contactNo: '9335828140',
       department: 'it',
@@ -31,7 +31,7 @@ class EmployeeProvider extends ChangeNotifier {
     User(
       id: '1',
       username: 'satendra pal',
-      role: 'it',
+      profession: 'it',
       email: 'satyendrapal565@gmail.com',
       contactNo: '9335828140',
       department: 'it',
@@ -41,7 +41,7 @@ class EmployeeProvider extends ChangeNotifier {
     User(
       id: '1',
       username: 'satendra pal',
-      role: 'it',
+      profession: 'it',
       email: 'satyendrapal565@gmail.com',
       contactNo: '9335828140',
       department: 'it',
@@ -51,7 +51,7 @@ class EmployeeProvider extends ChangeNotifier {
     User(
       id: '1',
       username: 'satendra pal',
-      role: 'it',
+      profession: 'it',
       email: 'satyendrapal565@gmail.com',
       contactNo: '9335828140',
       department: 'it',

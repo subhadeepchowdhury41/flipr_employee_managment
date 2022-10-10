@@ -21,7 +21,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late EmployeeProvider _employeeProvider;
 
-  String? _username, _role, _email, _contactNo, _department, _joiningDate;
+  String? _username, _profession, _email, _contactNo, _department, _joiningDate;
 
   @override
   void didChangeDependencies() {
@@ -92,7 +92,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       if (val == null || val.isEmpty) {
                         return 'Please add role';
                       }
-                      _role = val;
+                      _profession = val;
                       return null;
                     },
                     hintText: 'role',
@@ -157,7 +157,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
     if (_formKey.currentState!.validate()) {
       _employeeProvider.addEmployee({
         'username': _username,
-        'role': _role,
+        'profession': _profession,
         'email': _email,
         'contactNo': _contactNo,
         'department': _department,

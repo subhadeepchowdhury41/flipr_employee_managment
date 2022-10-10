@@ -1,7 +1,7 @@
 class User {
   final String id;
   final String username;
-  final String role;
+  final String profession;
   final String email;
   final String contactNo;
   final String department;
@@ -11,7 +11,7 @@ class User {
   User({
     required this.id,
     required this.username,
-    required this.role,
+    required this.profession,
     required this.email,
     required this.contactNo,
     required this.department,
@@ -23,7 +23,7 @@ class User {
     return User(
         username: data['username'],
         id: data['id'],
-        role: data['role'],
+        profession: data['profession'],
         email: data['email'],
         contactNo: data['contactNo'],
         joiningDate: data['joiningDate'],
@@ -34,7 +34,7 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       'username': username,
-      'role': role,
+      'profession': profession,
       'email': email,
       'contactNo': contactNo,
       'department': department,

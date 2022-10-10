@@ -132,7 +132,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
                       child: ListTileWidget(
                         leading: const Icon(Icons.person, color: Colors.black),
                         title: Text(
-                          widget.employee.role,
+                          widget.employee.profession,
                           style: const TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
