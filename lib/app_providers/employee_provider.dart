@@ -13,6 +13,7 @@ class EmployeeProvider extends ChangeNotifier {
       contactNo: '9335828140',
       department: 'it',
       joiningDate: '10/09/2022',
+      isActive: true,
     ),
     User(
       id: '1',
@@ -22,6 +23,7 @@ class EmployeeProvider extends ChangeNotifier {
       contactNo: '9335828140',
       department: 'it',
       joiningDate: '10/09/2022',
+      isActive: true,
     ),
     User(
       id: '1',
@@ -31,6 +33,7 @@ class EmployeeProvider extends ChangeNotifier {
       contactNo: '9335828140',
       department: 'it',
       joiningDate: '10/09/2022',
+      isActive: true,
     ),
     User(
       id: '1',
@@ -40,6 +43,17 @@ class EmployeeProvider extends ChangeNotifier {
       contactNo: '9335828140',
       department: 'it',
       joiningDate: '10/09/2022',
+      isActive: true,
+    ),
+    User(
+      id: '1',
+      username: 'satendra pal',
+      role: 'it',
+      email: 'satyendrapal565@gmail.com',
+      contactNo: '9335828140',
+      department: 'it',
+      joiningDate: '10/09/2022',
+      isActive: true,
     ),
   ];
   List<User> get employeeList {
@@ -48,9 +62,9 @@ class EmployeeProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
-  Future<void> updateTaskList() async {}
+  Future<void> updateEmployee() async {}
 
-  Future<void> setTasksList() async {}
+  Future<void> setEmployeeList() async {}
 
   /// method for adding task in databases
   Future<void> addEmployee(Map<String, dynamic> userData) async {

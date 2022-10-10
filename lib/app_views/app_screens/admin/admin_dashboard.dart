@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../app_providers/employee_provider.dart';
 import '../../app_widgets/employee_card.dart';
 import 'add_employee_page.dart';
+import 'employee_charts_page.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({Key? key}) : super(key: key);
@@ -40,10 +41,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     super.didChangeDependencies();
   }
 
-  void _changeDate(String date) {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,19 +50,40 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
       body: Container(
         // color: Colors.red,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Consumer<EmployeeProvider>(
-          builder: (_, employeeProvider, child) {
-            return ListView.builder(
-              // physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: employeeProvider.employeeList.length,
-              itemBuilder: (context, index) {
-                return EmployeeCard(
-                  employee: employeeProvider.employeeList[index],
-                  navigate: () {},
-                );
-              },
-            );
+        child: FutureBuilder(
+          future: _employeeProvider.setEmployeeList(),
+          builder: (context, AsyncSnapshot<void> snap) {
+            if (snap.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snap.hasError) {
+              return const Text('Something went wrong');
+            } else {
+              return Consumer<EmployeeProvider>(
+                builder: (_, employeeProvider, child) {
+                  return ListView.builder(
+                    // physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: employeeProvider.employeeList.length,
+                    itemBuilder: (context, index) {
+                      return EmployeeCard(
+                        employee: employeeProvider.employeeList[index],
+                        navigate: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => EmployeeChartPage(
+                                employee: employeeProvider.employeeList[index],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              );
+            }
           },
         ),
       ),

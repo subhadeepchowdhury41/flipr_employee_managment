@@ -1,0 +1,21 @@
+{
+  "users" : [
+    {
+
+    }
+  ],
+  "tasks" :
+    {
+      "uniqueUserid": [
+        {
+          "description": "task.description",
+          "taskType": "task.taskType",
+          "date": "task.date",
+          "startTime": "task.startTime",
+          "taskDuration": "task.taskDuration"
+        }
+      ]
+    }
+
+
+}

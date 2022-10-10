@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StackedBarChart extends StatefulWidget {
-  const StackedBarChart({Key? key}) : super(key: key);
+  final String uid;
+  final String date;
+  const StackedBarChart({
+    Key? key,
+    required this.date,
+    required this.uid,
+  }) : super(key: key);
 
   @override
   State<StackedBarChart> createState() => _StackedBarChartState();

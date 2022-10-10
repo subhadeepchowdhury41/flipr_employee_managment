@@ -36,7 +36,10 @@ class _TasksChartPageState extends State<TasksChartPage> {
               ),
               const SizedBox(height: 30),
               Expanded(
-                child: StackedBarChart(),
+                child: StackedBarChart(
+                  uid: 'satendrapal',
+                  date: '11/09/2022',
+                ),
               ),
             ],
           ),
