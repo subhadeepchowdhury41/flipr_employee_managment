@@ -2,9 +2,6 @@ import 'package:flipr_employee_managment/app_models/user_model.dart';
 import 'package:flipr_employee_managment/app_services/database/admin_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../app_providers/admin/employee_provider.dart';
 import '../../app_widgets/employee_card.dart';
 import 'add_employee_page.dart';
 import 'employee_charts_page.dart';
@@ -17,13 +14,8 @@ class AdminDashboardPage extends StatefulWidget {
 }
 
 class _AdminDashboardPageState extends State<AdminDashboardPage> {
-  late EmployeeProvider _employeeProvider;
 
   String? _date;
-
-  Future<int> _getTasksList() async {
-    return 6;
-  }
 
   @override
   void initState() {
@@ -34,7 +26,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
 
   @override
   void didChangeDependencies() {
-    _employeeProvider = Provider.of<EmployeeProvider>(context);
     super.didChangeDependencies();
   }
   @override

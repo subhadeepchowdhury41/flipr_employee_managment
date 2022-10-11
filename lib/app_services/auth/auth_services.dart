@@ -1,6 +1,5 @@
 import 'package:flipr_employee_managment/app_services/database/shared_preference.dart';
 import 'package:flipr_employee_managment/app_utils/http_requsets.dart';
-import 'package:flutter/cupertino.dart';
 
 class AuthServices {
   static Future<Map<String, dynamic>?> signInWithUsernameAndPassword(
@@ -14,6 +13,9 @@ class AuthServices {
       if (userDetails!.containsKey('message')) {
         user!['err_msg'] = userDetails['message'];
       } else {
+        print(userDetails);
+        SharedPreferenceServices.setLoginCredentials(accessToken: userDetails['accessToken'],
+            refreshToken: userDetails['refreshToken']);
         user = userDetails;
       }
     });

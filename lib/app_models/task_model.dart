@@ -14,12 +14,13 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> taskData) {
+    // print(taskData);
     return Task(
       description: taskData['description'],
-      taskType: taskData['taskType'],
+      taskType: taskData['type'],
       date: taskData['date'],
       startTime: taskData['startTime'],
-      taskDuration: taskData['taskDuration'],
+      taskDuration: taskData['duration'],
     );
   }
 
