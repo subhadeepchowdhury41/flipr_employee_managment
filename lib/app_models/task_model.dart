@@ -1,4 +1,5 @@
 class Task {
+  final String id;
   final String description;
   final String taskType;
   final String startTime;
@@ -6,6 +7,7 @@ class Task {
   final String date;
 
   Task({
+    required this.id,
     required this.description,
     required this.taskType,
     required this.date,
@@ -16,6 +18,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> taskData) {
     // print(taskData);
     return Task(
+      id: taskData['_id'],
       description: taskData['description'],
       taskType: taskData['type'],
       date: taskData['date'],
