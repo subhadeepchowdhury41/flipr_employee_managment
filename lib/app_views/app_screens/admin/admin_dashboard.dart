@@ -14,7 +14,6 @@ class AdminDashboardPage extends StatefulWidget {
 }
 
 class _AdminDashboardPageState extends State<AdminDashboardPage> {
-
   String? _date;
 
   @override
@@ -61,6 +60,9 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
                             ),
                           ),
                         );
+                      },
+                      onChanged: () {
+                        setState(() {});
                       },
                     );
                   },

@@ -43,6 +43,7 @@ class _EmployeeChartPageState extends State<EmployeeChartPage> {
                 EmployeeCard(
                   navigate: () {},
                   employee: widget.employee,
+                  onChanged: () {},
                 ),
                 const SizedBox(height: 25),
                 DatePicker(

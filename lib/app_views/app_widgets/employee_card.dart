@@ -11,10 +11,12 @@ import '../../app_models/task_model.dart';
 class EmployeeCard extends StatefulWidget {
   final User employee;
   final Function() navigate;
+  final Function() onChanged;
   const EmployeeCard({
     Key? key,
     required this.navigate,
     required this.employee,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class EmployeeCard extends StatefulWidget {
 }
 
 class _EmployeeCardState extends State<EmployeeCard> {
-  bool _isActive = true;
+  late bool _isActive;
   late EmployeeProvider _employeeProvider;
 
   Future<void> _updateEmployeeStatus() async {
@@ -34,7 +36,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
       // 'department': widget.employee.department,
       // 'joiningDate': widget.employee.joiningDate,
       // 'password': widget.employee.password,
-      'active': (_isActive),
+      'active': _isActive,
     };
 
     await AuthServices.updateEmployee(id: widget.employee.id, empData: user);
@@ -49,7 +51,15 @@ class _EmployeeCardState extends State<EmployeeCard> {
   @override
   void didChangeDependencies() {
     _employeeProvider = Provider.of<EmployeeProvider>(context);
+    _isActive = widget.employee.isActive;
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _isActive = widget.employee.isActive;
+    super.initState();
   }
 
   @override
@@ -92,7 +102,9 @@ class _EmployeeCardState extends State<EmployeeCard> {
                             onTap: () async {
                               /// TODO: UPDATE EMPLOYEE
                               _changeStatus();
-                              await _updateEmployeeStatus();
+                              await _updateEmployeeStatus().then((value) {
+                                widget.onChanged();
+                              });
                             },
                             // padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
