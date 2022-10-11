@@ -1,3 +1,4 @@
+import 'package:flipr_employee_managment/app_models/task_model.dart';
 import 'package:flipr_employee_managment/app_providers/common/auth_provider.dart';
 import 'package:flipr_employee_managment/app_providers/task_provider.dart';
 import 'package:flipr_employee_managment/app_services/database/employee_services.dart';
@@ -56,7 +57,8 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
               return const CircularProgressIndicator();
             } else {
               if (snapshot.hasData) {
-                Column(
+                // List<Task>? tasks = snapshot.data;
+                return Column(
                   children: [
                     DatePicker(
                       validate: (DateTime? date) {
@@ -74,7 +76,7 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
                       onChanged: (date) async {
                         // debugPrint('calling async function onchanged\n');
                         _date = date;
-                        await taskProvider.filterTaskListFromDate(_date!);
+                        // await snapshot.data.filterTaskListFromDate(_date!);
                         // debugPrint('calling setState function \n');
 
                         setState(() {
@@ -93,11 +95,13 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
                             ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: taskProvider.tasksList.length,
+                              itemCount: snapshot.data?.length,
                               itemBuilder: (context, index) {
                                 return TaskCard(
-                                  task: taskProvider.tasksList[index],
-                                  navigate: () {},
+                                  task: snapshot.data![index],
+                                  navigate: () {
+
+                                  },
                                 );
                               },
                             ),
@@ -107,6 +111,8 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
                     ),
                   ],
                 );
+              } else {
+                return const CircularProgressIndicator();
               }
             }
           },
@@ -116,7 +122,7 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
         onPressed: () async {
           Navigator.of(context).push(
             CupertinoPageRoute(builder: (context) {
-              return const EmployeeAddTaskPage();
+              return EmployeeAddTaskPage(id: _authProvider.userId,);
             }),
           );
         },

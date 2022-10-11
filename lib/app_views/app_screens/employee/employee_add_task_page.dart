@@ -1,3 +1,4 @@
+import 'package:flipr_employee_managment/app_services/database/employee_services.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/app_input_field.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/date_picker.dart';
@@ -10,21 +11,19 @@ import '../../../app_providers/task_provider.dart';
 import '../../app_widgets/time_duration_input.dart';
 
 class EmployeeAddTaskPage extends StatefulWidget {
-  const EmployeeAddTaskPage({Key? key}) : super(key: key);
-
+  const EmployeeAddTaskPage({Key? key, required this.id}) : super(key: key);
+  final String id;
   @override
   State<EmployeeAddTaskPage> createState() => _EmployeeAddTaskPageState();
 }
 
 class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TaskProvider _taskProvider;
 
   String? _taskStartTime, _date, _taskDescription, _taskType, _taskDuration;
 
   @override
   void didChangeDependencies() {
-    _taskProvider = Provider.of<TaskProvider>(context);
     super.didChangeDependencies();
   }
 
@@ -131,13 +130,13 @@ class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
 
   Future<void> _validateAndAddTask() async {
     if (_formKey.currentState!.validate()) {
-      _taskProvider.addTask({
+      EmployeeServices.addTask({
         'description': _taskDescription,
-        'taskType': _taskType,
-        'date': _date,
+        'type': _taskType,
         'startTime': _taskStartTime,
-        'taskDuration': _taskDuration,
-      });
+        'duration': _taskDuration,
+        'date': _date
+      }, widget.id);
       Navigator.pop(context);
     }
   }

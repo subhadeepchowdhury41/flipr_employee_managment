@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final AuthProvider _provider;
+  late AuthProvider _provider;
 
   @override
   void initState() {

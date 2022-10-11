@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app_providers/admin/employee_provider.dart';
-import 'app_views/app_screens/task_chart_page.dart';
 
 void main() {
   runApp(const MyApp());
