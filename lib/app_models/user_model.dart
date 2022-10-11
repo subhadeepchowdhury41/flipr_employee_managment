@@ -31,7 +31,7 @@ class User {
       joiningDate: data['joiningDate'],
       department: data['department'],
       isActive: data['active'],
-      password: data['password'],
+      password: data['password'] ?? '',
     );
   }
 

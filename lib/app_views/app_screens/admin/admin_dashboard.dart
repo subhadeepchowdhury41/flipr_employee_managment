@@ -78,7 +78,11 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         onPressed: () async {
           Navigator.of(context).push(
             CupertinoPageRoute(builder: (context) {
-              return const AddEmployeePage();
+              return AddEmployeePage(
+                onAdd: () {
+                  setState(() {});
+                },
+              );
             }),
           );
         },

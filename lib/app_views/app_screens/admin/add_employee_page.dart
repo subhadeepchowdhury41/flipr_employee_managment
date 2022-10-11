@@ -8,7 +8,11 @@ import 'package:provider/provider.dart';
 import '../../../app_providers/admin/employee_provider.dart';
 
 class AddEmployeePage extends StatefulWidget {
-  const AddEmployeePage({Key? key}) : super(key: key);
+  final Function() onAdd;
+  const AddEmployeePage({
+    Key? key,
+    required this.onAdd,
+  }) : super(key: key);
 
   @override
   State<AddEmployeePage> createState() => _AddEmployeePageState();
@@ -17,6 +21,7 @@ class AddEmployeePage extends StatefulWidget {
 class _AddEmployeePageState extends State<AddEmployeePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late EmployeeProvider _employeeProvider;
+  bool _isLoading = false;
 
   String? _username,
       _profession,
@@ -70,7 +75,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       return null;
                     },
                     hintText: 'password',
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 25),
 
@@ -79,6 +84,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     validate: (String? val) {
                       if (val == null || val.isEmpty) {
                         return 'Please add email';
+                      } else {
+                        bool emailValid = RegExp(
+                                r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                            .hasMatch(val);
+                        if (!emailValid) {
+                          return 'Please enter a valid email';
+                        }
                       }
                       _email = val;
                       return null;
@@ -93,6 +105,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                     validate: (String? val) {
                       if (val == null || val.isEmpty) {
                         return 'Please add contact number';
+                      } else {
+                        bool validPhone = RegExp(
+                                r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)')
+                            .hasMatch(val);
+                        if (!validPhone) {
+                          return 'Please enter a valid phone number';
+                        }
                       }
                       _contactNo = val;
                       return null;
@@ -106,12 +125,12 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   AppTextInputWidget(
                     validate: (String? val) {
                       if (val == null || val.isEmpty) {
-                        return 'Please add role';
+                        return 'Please add profession';
                       }
                       _profession = val;
                       return null;
                     },
-                    hintText: 'role',
+                    hintText: 'profession',
                   ),
                   const SizedBox(height: 25),
 
@@ -147,7 +166,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       if (taskType == null ||
                           taskType.isEmpty ||
                           taskType == 'Task Type') {
-                        return 'Please choose a task type';
+                        return 'Please choose a department';
                       }
                       _department = taskType;
                       return null;
@@ -155,11 +174,31 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   ),
                   const SizedBox(height: 25),
 
-                  /// add task button
-                  AppRoundedButton(
-                    onPress: () async => await _validateAndAddTask(),
-                    buttonText: 'Add Employee',
-                  ),
+                  /// add employee button
+                  _isLoading
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(
+                              strokeWidth: 5,
+                              semanticsLabel: 'Adding Employee',
+                              backgroundColor: Colors.blueAccent,
+                            ),
+                            SizedBox(width: 25),
+                            Text(
+                              'Adding Employee',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            )
+                          ],
+                        )
+                      : AppRoundedButton(
+                          onPress: () async => await _validateAndAddTask(),
+                          buttonText: 'Add Employee',
+                        ),
                 ],
               ),
             ),
@@ -171,6 +210,9 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
   Future<void> _validateAndAddTask() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       await _employeeProvider.addEmployee({
         'username': _username,
         'profession': _profession,
@@ -180,19 +222,12 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         'joiningDate': _joiningDate,
         'password': _password
       }, context).then((value) async {
+        setState(() {
+          _isLoading = false;
+        });
+        widget.onAdd();
         Navigator.pop(context);
       });
-      // await _employeeProvider.addEmployee({
-      //   'username': 'add'.toString(),
-      //   'profession': _profession.toString(),
-      //   'email': 'satyendrapal1090@gmail.com'.toString(),
-      //   'contactNo': _contactNo.toString(),
-      //   'department': _department.toString(),
-      //   'joiningDate': _joiningDate.toString(),
-      //   'password': _password.toString()
-      // }, context).then((value) async {
-      //   Navigator.pop(context);
-      // });
     }
   }
 }

@@ -8,15 +8,20 @@ import 'package:flutter/material.dart';
 import '../../app_widgets/time_duration_input.dart';
 
 class EmployeeAddTaskPage extends StatefulWidget {
-  const EmployeeAddTaskPage({Key? key, required this.id}) : super(key: key);
+  const EmployeeAddTaskPage({
+    Key? key,
+    required this.id,
+    required this.onTaskAdd,
+  }) : super(key: key);
   final String id;
+  final Function() onTaskAdd;
   @override
   State<EmployeeAddTaskPage> createState() => _EmployeeAddTaskPageState();
 }
 
 class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  bool _isLoading = false;
   String? _taskStartTime, _date, _taskDescription, _taskType, _taskDuration;
 
   @override
@@ -28,7 +33,9 @@ class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text('Add Task'),
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -112,10 +119,30 @@ class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
                   const SizedBox(height: 30),
 
                   /// add task button
-                  AppRoundedButton(
-                    onPress: () async => await _validateAndAddTask(),
-                    buttonText: 'Add Task',
-                  ),
+                  _isLoading
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(
+                              strokeWidth: 5,
+                              semanticsLabel: 'Adding Task',
+                              backgroundColor: Colors.blueAccent,
+                            ),
+                            SizedBox(width: 25),
+                            Text(
+                              'Adding Task',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 24,
+                                color: Colors.green,
+                              ),
+                            )
+                          ],
+                        )
+                      : AppRoundedButton(
+                          onPress: () async => await _validateAndAddTask(),
+                          buttonText: 'Add Task',
+                        ),
                 ],
               ),
             ),
@@ -127,14 +154,25 @@ class _EmployeeAddTaskPageState extends State<EmployeeAddTaskPage> {
 
   Future<void> _validateAndAddTask() async {
     if (_formKey.currentState!.validate()) {
-      EmployeeServices.addTask({
+      setState(() {
+        _isLoading = true;
+      });
+
+      await EmployeeServices.addTask({
         'description': _taskDescription,
         'type': _taskType,
         'startTime': _taskStartTime,
         'duration': _taskDuration,
         'date': _date
-      }, widget.id);
-      Navigator.pop(context);
+      }, widget.id)
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        widget.onTaskAdd();
+        Navigator.of(context).pop(_date);
+      });
     }
   }
 }

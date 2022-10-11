@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late AuthProvider _provider;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -81,13 +82,33 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
 
                 /// submitButton
-                AppRoundedButton(
-                  onPress: () async {
-                    // todo: login button
-                    await _validateLoginPage();
-                  },
-                  buttonText: 'Login',
-                ),
+                _isLoading
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          CircularProgressIndicator(
+                            strokeWidth: 5,
+                            semanticsLabel: 'Logging In',
+                            backgroundColor: Colors.red,
+                          ),
+                          SizedBox(width: 25),
+                          Text(
+                            'Logging In',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 24,
+                              color: Colors.green,
+                            ),
+                          )
+                        ],
+                      )
+                    : AppRoundedButton(
+                        onPress: () async {
+                          // todo: login button
+                          await _validateLoginPage();
+                        },
+                        buttonText: 'Login',
+                      ),
                 const SizedBox(height: 15),
               ],
             ),
@@ -99,9 +120,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _validateLoginPage() async {
     if (_formKey.currentState!.validate()) {
-      _provider
+      setState(() {
+        _isLoading = true;
+      });
+      await _provider
           .logIn(context: context, username: _username!, password: _password!)
-          .then((value) {});
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
   }
 }

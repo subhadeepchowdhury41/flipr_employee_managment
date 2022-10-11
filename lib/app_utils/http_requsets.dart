@@ -88,9 +88,7 @@ class HttpRequests {
         }
       } else {
         debugPrint("Sending without access token to $_baseUrl$url");
-        await http
-            .put(Uri.parse(_baseUrl + url), body: json.encode(body))
-            .then((response) {
+        await http.put(Uri.parse(_baseUrl + url), body: body).then((response) {
           responseBody = response.body;
           debugPrint('responsebody --> \n${responseBody.toString()}\n');
         });
@@ -113,7 +111,7 @@ class HttpRequests {
       if (requiresAccess) {
         if (accessToken != null) {
           debugPrint("Sending with access token");
-          final response = await http.delete(Uri.parse(url),
+          final response = await http.delete(Uri.parse(_baseUrl + url),
               headers: {"x-access-token": accessToken}, body: body);
           return response;
         }
@@ -121,7 +119,8 @@ class HttpRequests {
         return null;
       } else {
         debugPrint("Sending without access token");
-        final response = await http.delete(Uri.parse(url), body: body);
+        final response =
+            await http.delete(Uri.parse(_baseUrl + url), body: body);
         return response;
       }
     }).catchError((err) {

@@ -67,10 +67,8 @@ class _StackedBarChartState extends State<StackedBarChart> {
     for (Task task in tasks) {
       debugPrint('task --> ${task.toJson(task)}\n');
       if (task.taskType == 'Break') {
-        debugPrint('break --> ${dataMap['Break']!.toString()}\n');
         String duration =
             task.taskDuration.substring(0, task.taskDuration.length - 4);
-        debugPrint('duration --> $duration:\n');
         double data = double.parse(duration);
         dataMap['Break'] = data + dataMap['Break']!;
       } else if (task.taskType == 'Meeting') {
@@ -86,47 +84,45 @@ class _StackedBarChartState extends State<StackedBarChart> {
       }
     }
 
-    List<TaskData> taskDataList = _getTaskData(dataMap) ?? [];
+    List<TaskData> taskDataList = _getTaskData(dataMap);
 
     return taskDataList;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder(
-        future: _getTheEmployeeTaskDate(),
-        builder: (context, AsyncSnapshot<List<TaskData>> dataMap) {
-          if (dataMap.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (dataMap.hasData) {
-            return Column(
-              children: [
-                SfCartesianChart(
-                  title: ChartTitle(
-                      text: 'Weekly Task Details of Employee\n (in hours.)'),
-                  legend: Legend(isVisible: true),
-                  series: <ChartSeries>[
-                    StackedColumnSeries<TaskData, String>(
-                      dataSource: dataMap.data!,
-                      xValueMapper: (TaskData exp, _) => exp.category,
-                      yValueMapper: (TaskData exp, _) => exp.duration,
-                      name: 'Breaks',
-                    ),
-                  ],
-                  primaryXAxis: CategoryAxis(),
-                ),
-              ],
-            );
-          } else {
-            return const Center(
-              child: Text('Something went wrong'),
-            );
-          }
-        },
-      ),
+    return FutureBuilder(
+      future: _getTheEmployeeTaskDate(),
+      builder: (context, AsyncSnapshot<List<TaskData>> dataMap) {
+        if (dataMap.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (dataMap.hasData) {
+          return Column(
+            children: [
+              SfCartesianChart(
+                title: ChartTitle(
+                    text: 'Weekly Task Details of Employee\n (in hours.)'),
+                legend: Legend(isVisible: false),
+                series: <ChartSeries>[
+                  StackedColumnSeries<TaskData, String>(
+                    dataSource: dataMap.data!,
+                    xValueMapper: (TaskData exp, _) => exp.category,
+                    yValueMapper: (TaskData exp, _) => exp.duration,
+                    // name: 'Breaks',
+                  ),
+                ],
+                primaryXAxis: CategoryAxis(),
+              ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: Text('Something went wrong'),
+          );
+        }
+      },
     );
   }
 }

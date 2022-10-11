@@ -33,7 +33,7 @@ class TaskProvider extends ChangeNotifier {
   Future<void> addTask(Map<String, dynamic> data, BuildContext context) async {
     isLoading = true;
     notifyListeners();
-    await AuthServices.addEmployee(empData: data).then((result) async {
+    await AdminServices.addEmployee(empData: data).then((result) async {
       if (result == null) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Something went wrong")));

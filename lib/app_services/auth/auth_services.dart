@@ -24,41 +24,19 @@ class AuthServices {
     return user;
   }
 
-  static Future<String?> addEmployee(
-      {required Map<String, dynamic> empData}) async {
-    String? result;
-    await HttpRequests.sendPostRequest(url: 'auth/signup', body: empData)
-        .then((response) {
-      if (response != null) {
-        if (response.containsKey('result')) {
-          if (response['result'].toString().contains('success')) {
-            result = "Success";
-          } else {
-            result = response['result'];
-          }
-        }
+  /// update user profile
+  static Future<Map<String, dynamic>?> updateEmployeeProfile(
+      {required Map<String, dynamic> profile, required String id}) async {
+    Map<String, dynamic>? user = {};
+    await HttpRequests.sendPutRequest(
+            url: 'auth/employee/$id', body: profile, requiresAccess: false)
+        .then((userDetails) async {
+      if (userDetails!.containsKey('message')) {
+        user!['err_msg'] = userDetails['message'];
+      } else {
+        user = userDetails;
       }
     });
-    return result;
-  }
-
-  static Future<String?> updateEmployee(
-      {required String id, required Map<String, dynamic> empData}) async {
-    String? result;
-
-    debugPrint('\nempData --> $empData\n');
-    await HttpRequests.sendPutRequest(url: 'auth/employee/$id', body: empData)
-        .then((response) {
-      if (response != null) {
-        if (response.containsKey('result')) {
-          if (response['result'].toString().contains('success')) {
-            result = "Success";
-          } else {
-            result = response['result'];
-          }
-        }
-      }
-    });
-    return result;
+    return user;
   }
 }

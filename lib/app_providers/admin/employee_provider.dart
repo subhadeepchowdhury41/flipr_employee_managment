@@ -37,7 +37,7 @@ class EmployeeProvider extends ChangeNotifier {
       Map<String, dynamic> data, BuildContext context) async {
     isLoading = true;
     notifyListeners();
-    await AuthServices.addEmployee(empData: data).then((result) async {
+    await AdminServices.addEmployee(empData: data).then((result) async {
       if (result == null) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Something went wrong")));
@@ -62,7 +62,7 @@ class EmployeeProvider extends ChangeNotifier {
       Map<String, dynamic> data, String id, BuildContext context) async {
     isLoading = true;
     notifyListeners();
-    await AuthServices.updateEmployee(id: id, empData: data)
+    await AdminServices.updateEmployee(id: id, empData: data)
         .then((result) async {
       if (result == null) {
         ScaffoldMessenger.of(context).showSnackBar(

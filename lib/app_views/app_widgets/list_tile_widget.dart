@@ -17,9 +17,8 @@ class ListTileWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           leading,
-          const SizedBox(width: 15),
+          const SizedBox(width: 10),
           title,
-          // title,
         ],
       ),
     );

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_models/task_model.dart';
+import '../../app_services/database/admin_services.dart';
 
 class EmployeeCard extends StatefulWidget {
   final User employee;
@@ -29,17 +30,11 @@ class _EmployeeCardState extends State<EmployeeCard> {
 
   Future<void> _updateEmployeeStatus() async {
     Map<String, dynamic> user = {
-      // 'username': widget.employee.username,
-      // 'profession': widget.employee.profession,
-      // 'email': widget.employee.email,
-      // 'contactNo': widget.employee.contactNo,
-      // 'department': widget.employee.department,
-      // 'joiningDate': widget.employee.joiningDate,
-      // 'password': widget.employee.password,
-      'active': _isActive,
+      'active': (!_isActive).toString(),
     };
-
-    await AuthServices.updateEmployee(id: widget.employee.id, empData: user);
+    debugPrint(
+        'sending active --> ${!_isActive} for id --> ${widget.employee.id}\n\n');
+    await AdminServices.updateEmployee(id: widget.employee.id, empData: user);
   }
 
   void _changeStatus() {
@@ -100,9 +95,8 @@ class _EmployeeCardState extends State<EmployeeCard> {
                           PopupMenuItem(
                             value: 0,
                             onTap: () async {
-                              /// TODO: UPDATE EMPLOYEE
-                              _changeStatus();
                               await _updateEmployeeStatus().then((value) {
+                                _changeStatus();
                                 widget.onChanged();
                               });
                             },
@@ -110,6 +104,25 @@ class _EmployeeCardState extends State<EmployeeCard> {
                             child: Text(
                               _isActive ? 'Deactivate' : 'Activate',
                               style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: CupertinoColors.white,
+                              ),
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 0,
+                            onTap: () async {
+                              await AdminServices.deleteEmployee(
+                                      widget.employee.id)
+                                  .then((value) {
+                                widget.onChanged();
+                              });
+                            },
+                            // padding: const EdgeInsets.only(left: 8.0),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 color: CupertinoColors.white,
@@ -142,11 +155,13 @@ class _EmployeeCardState extends State<EmployeeCard> {
                       child: ListTileWidget(
                         leading: const Icon(Icons.account_balance_outlined,
                             color: Colors.black),
-                        title: Text(
-                          widget.employee.department,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                        title: Expanded(
+                          child: Text(
+                            widget.employee.department,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),

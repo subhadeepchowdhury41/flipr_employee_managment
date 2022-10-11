@@ -4,7 +4,7 @@ import 'app_providers/admin/employee_provider.dart';
 import 'app_providers/common/auth_provider.dart';
 import 'app_providers/task_provider.dart';
 import 'app_views/app_screens/admin/admin_dashboard.dart';
-import 'app_views/app_screens/employee/employee_task_page.dart';
+import 'app_views/app_screens/employee/employee_dashboard.dart';
 import 'app_views/app_screens/login/login_page.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppRoundedButton extends StatefulWidget {
+class AppRoundedButton extends StatelessWidget {
   final Function() onPress;
   final String buttonText;
   const AppRoundedButton({
@@ -10,14 +10,9 @@ class AppRoundedButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AppRoundedButton> createState() => _AppRoundedButtonState();
-}
-
-class _AppRoundedButtonState extends State<AppRoundedButton> {
-  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: widget.onPress,
+      onPressed: onPress,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.lightBlue,
         elevation: 8,
@@ -31,11 +26,11 @@ class _AppRoundedButtonState extends State<AppRoundedButton> {
         alignment: Alignment.center,
         padding: const EdgeInsets.all(15),
         child: Text(
-          widget.buttonText,
+          buttonText,
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w800,
-            color: Colors.white70,
+            color: Colors.white,
           ),
         ),
       ),
