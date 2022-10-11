@@ -17,26 +17,37 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   bool isLoading = false;
 
   Future<void> fetchEmployees() async {
-    await AdminServices.getAllEmployees().then((employees) {
-      setEmployeeList(employees.map((e) => User.fromJson(e)).toList());
-    });
+    List<Map<String, dynamic>> list = await AdminServices.getAllEmployees();
+
+    List<User> listOfUser = list.map((e) {
+      User user = User.fromJson(e);
+      debugPrint('a user has been created --> ${user.toJson()}');
+      return user;
+    }).toList();
+    _employeeList = [...listOfUser];
+
+    // debugPrint('_employeeList \n ${_employeeList.toString()}');
+    // notifyListeners();
   }
 
-  Future<void> addEmployee(Map<String, dynamic> data, BuildContext context) async {
+  Future<void> addEmployee(
+      Map<String, dynamic> data, BuildContext context) async {
     isLoading = true;
     notifyListeners();
     await AuthServices.addEmployee(empData: data).then((result) async {
       if (result == null) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Something went wrong")));
       } else {
         if (result == 'Success') {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee added successfully")));
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Employee added successfully")));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(result)));
         }
       }
       await fetchEmployees().whenComplete(() {
@@ -46,6 +57,31 @@ class EmployeeProvider extends ChangeNotifier {
     });
   }
 
+  /// update employee status
+  Future<void> updateEmployee(
+      Map<String, dynamic> data, String id, BuildContext context) async {
+    isLoading = true;
+    notifyListeners();
+    await AuthServices.updateEmployee(id: id, empData: data)
+        .then((result) async {
+      if (result == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Something went wrong")));
+      } else {
+        if (result == 'Success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Employee updated successfully")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(result)));
+        }
+      }
+      await fetchEmployees().whenComplete(() {
+        isLoading = false;
+        notifyListeners();
+      });
+    });
+  }
 
   /// filter task list for a specific day
   Future<void> filterTaskListFromDate(String date) async {

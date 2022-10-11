@@ -58,19 +58,23 @@ class _EmployeeChartPageState extends State<EmployeeChartPage> {
 
                     return null;
                   },
-                  onChanged: (date) async {},
+                  onChanged: (date) async {
+                    setState(() {
+                      _date = date;
+                    });
+                  },
                 ),
                 const SizedBox(height: 15),
                 Column(
                   children: [
                     PieChartEmployee(
-                      uid: 'satendrapal',
-                      date: '11/09/2022',
+                      uid: widget.employee.id,
+                      date: _date,
                     ),
                     const SizedBox(height: 30),
                     StackedBarChart(
-                      uid: 'satendrapal',
-                      date: '11/09/2022',
+                      uid: widget.employee.id,
+                      date: _date,
                     ),
                   ],
                 ),

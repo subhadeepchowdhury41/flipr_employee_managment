@@ -18,7 +18,13 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late EmployeeProvider _employeeProvider;
 
-  String? _username, _profession, _email, _contactNo, _department, _joiningDate, _password;
+  String? _username,
+      _profession,
+      _email,
+      _contactNo,
+      _department,
+      _joiningDate,
+      _password;
 
   @override
   void didChangeDependencies() {
@@ -165,7 +171,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
 
   Future<void> _validateAndAddTask() async {
     if (_formKey.currentState!.validate()) {
-      _employeeProvider.addEmployee({
+      await _employeeProvider.addEmployee({
         'username': _username,
         'profession': _profession,
         'email': _email,
@@ -173,8 +179,20 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         'department': _department,
         'joiningDate': _joiningDate,
         'password': _password
-      }, context);
-      Navigator.pop(context);
+      }, context).then((value) async {
+        Navigator.pop(context);
+      });
+      // await _employeeProvider.addEmployee({
+      //   'username': 'add'.toString(),
+      //   'profession': _profession.toString(),
+      //   'email': 'satyendrapal1090@gmail.com'.toString(),
+      //   'contactNo': _contactNo.toString(),
+      //   'department': _department.toString(),
+      //   'joiningDate': _joiningDate.toString(),
+      //   'password': _password.toString()
+      // }, context).then((value) async {
+      //   Navigator.pop(context);
+      // });
     }
   }
 }

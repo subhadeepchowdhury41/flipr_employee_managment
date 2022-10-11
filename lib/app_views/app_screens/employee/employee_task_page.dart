@@ -99,9 +99,7 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
                               itemBuilder: (context, index) {
                                 return TaskCard(
                                   task: snapshot.data![index],
-                                  navigate: () {
-
-                                  },
+                                  navigate: () {},
                                 );
                               },
                             ),
@@ -122,7 +120,9 @@ class _EmployeeTaskPageState extends State<EmployeeTaskPage> {
         onPressed: () async {
           Navigator.of(context).push(
             CupertinoPageRoute(builder: (context) {
-              return EmployeeAddTaskPage(id: _authProvider.userId,);
+              return EmployeeAddTaskPage(
+                id: _authProvider.userId,
+              );
             }),
           );
         },

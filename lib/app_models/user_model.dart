@@ -7,6 +7,7 @@ class User {
   final String department;
   final String joiningDate;
   final bool isActive;
+  final String password;
 
   User({
     required this.id,
@@ -17,18 +18,21 @@ class User {
     required this.department,
     required this.joiningDate,
     required this.isActive,
+    required this.password,
   });
 
   factory User.fromJson(Map<String, dynamic> data) {
     return User(
-        username: data['username'],
-        id: data['_id'],
-        profession: data['profession'],
-        email: data['email'],
-        contactNo: data['contactNo'],
-        joiningDate: data['joiningDate'],
-        department: data['department'],
-        isActive: data['active']);
+      username: data['username'],
+      id: data['_id'],
+      profession: data['profession'],
+      email: data['email'],
+      contactNo: data['contactNo'],
+      joiningDate: data['joiningDate'],
+      department: data['department'],
+      isActive: data['active'],
+      password: data['password'],
+    );
   }
 
   Map<String, dynamic> toJson() {

@@ -28,6 +28,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +68,6 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
               } else {
                 return const CircularProgressIndicator();
               }
-
             }
           },
         ),

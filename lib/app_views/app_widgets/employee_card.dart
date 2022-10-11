@@ -1,7 +1,10 @@
 import 'package:flipr_employee_managment/app_models/user_model.dart';
+import 'package:flipr_employee_managment/app_providers/admin/employee_provider.dart';
+import 'package:flipr_employee_managment/app_services/auth/auth_services.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/list_tile_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_models/task_model.dart';
 
@@ -20,15 +23,33 @@ class EmployeeCard extends StatefulWidget {
 
 class _EmployeeCardState extends State<EmployeeCard> {
   bool _isActive = true;
+  late EmployeeProvider _employeeProvider;
 
   Future<void> _updateEmployeeStatus() async {
-    _changeStatus();
+    Map<String, dynamic> user = {
+      // 'username': widget.employee.username,
+      // 'profession': widget.employee.profession,
+      // 'email': widget.employee.email,
+      // 'contactNo': widget.employee.contactNo,
+      // 'department': widget.employee.department,
+      // 'joiningDate': widget.employee.joiningDate,
+      // 'password': widget.employee.password,
+      'active': (_isActive),
+    };
+
+    await AuthServices.updateEmployee(id: widget.employee.id, empData: user);
   }
 
   void _changeStatus() {
     setState(() {
       _isActive = !_isActive;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    _employeeProvider = Provider.of<EmployeeProvider>(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -47,16 +68,6 @@ class _EmployeeCardState extends State<EmployeeCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ListTileWidget(
-                //   leading: const Icon(Icons.perm_identity, color: Colors.red),
-                //   title: Text(
-                //     employee.id,
-                //     style: const TextStyle(
-                //       fontWeight: FontWeight.w500,
-                //       fontSize: 16,
-                //     ),
-                //   ),
-                // ),
                 Row(
                   children: [
                     Expanded(
@@ -80,7 +91,8 @@ class _EmployeeCardState extends State<EmployeeCard> {
                             value: 0,
                             onTap: () async {
                               /// TODO: UPDATE EMPLOYEE
-                              _updateEmployeeStatus();
+                              _changeStatus();
+                              await _updateEmployeeStatus();
                             },
                             // padding: const EdgeInsets.only(left: 8.0),
                             child: Text(

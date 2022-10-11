@@ -5,7 +5,7 @@ import '../../app_constants.dart';
 
 class DatePicker extends StatefulWidget {
   final dynamic Function(DateTime? value) validate;
-  final Future<void> Function(String date) onChanged;
+  final Future Function(String date) onChanged;
   const DatePicker({
     Key? key,
     required this.validate,
