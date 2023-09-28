@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class HttpRequests {
-  static const String _baseUrl =
-      "https://flipr-employee-management.herokuapp.com/api/";
+  static const String _baseUrl = "http://192.168.1.12:3000/api/";
 
   static Future<Map<String, dynamic>?> sendGetRequest(
       {required String url, bool requiresAccess = false}) async {
@@ -125,6 +124,7 @@ class HttpRequests {
       }
     }).catchError((err) {
       debugPrint(err.toString());
+      throw err;
     });
     return null;
   }

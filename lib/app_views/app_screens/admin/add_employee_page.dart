@@ -2,7 +2,7 @@ import 'package:flipr_employee_managment/app_views/app_widgets/app_input_field.d
 import 'package:flipr_employee_managment/app_views/app_widgets/app_rounded_button.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/date_picker.dart';
 import 'package:flipr_employee_managment/app_views/app_widgets/dropdown_input.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DropdownMenu;
 import 'package:provider/provider.dart';
 
 import '../../../app_providers/admin/employee_provider.dart';
